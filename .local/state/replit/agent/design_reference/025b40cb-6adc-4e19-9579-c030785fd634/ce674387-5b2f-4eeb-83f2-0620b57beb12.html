@@ -1,0 +1,460 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovGraph - Open Government Data Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        'netflix': {
+                            'black': '#141414',
+                            'dark': '#1f1f1f',
+                            'red': '#e50914'
+                        },
+                        'gov': {
+                            'blue': '#1e40af',
+                            'light-blue': '#3b82f6'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .scroll-container {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        .chart-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .chart-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .slide-up-panel {
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        .chart-card:hover .slide-up-panel {
+            transform: translateY(0);
+        }
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="bg-netflix-black text-white font-sans">
+    <!-- @COMPONENT: Header -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-gradient-to-b from-netflix-black to-transparent p-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-chart-line text-gov-blue text-2xl"></i>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                    GovGraph
+                </h1>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="#" class="text-gray-300 hover:text-white transition-colors">Browse</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors">Sectors</a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors">About</a>
+            </nav>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: HeroSection -->
+    <section class="pt-24 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+                Open Government Data
+            </h2>
+            <p class="text-xl text-gray-400 max-w-2xl">
+                Explore interactive visualizations of public datasets across Agriculture, Healthcare, Education, and more.
+            </p>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HeroSection -->
+
+    <!-- @COMPONENT: MainContent -->
+    <main class="px-6 pb-20">
+        <div class="max-w-7xl mx-auto space-y-12">
+            
+            <!-- @COMPONENT: SectorRow - Agriculture -->
+            <section data-sector="agriculture">
+                <h3 class="text-2xl font-semibold mb-6 text-white">Agriculture & Food Security</h3>
+                <div class="scroll-container overflow-x-auto">
+                    <div class="flex space-x-6 pb-4" style="width: max-content;">
+                        
+                        <!-- Chart Card 1 -->
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <!-- Chart Container -->
+                            <div class="w-full h-full p-4">
+                                <canvas id="agricultureChart1" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display World Bank crop production data as line chart -->
+                            </div>
+                            
+                            <!-- Slide-up Panel -->
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Global Crop Production</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Annual production trends across major crops</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">World Bank Open Data</p>
+                            </div>
+                        </div>
+
+                        <!-- Chart Card 2 -->
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="agricultureChart2" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display food security index as bar chart -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Food Security Index</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Country-wise food security rankings</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">FAO Statistics</p>
+                            </div>
+                        </div>
+
+                        <!-- Chart Card 3 -->
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="agricultureChart3" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display agricultural employment as pie chart -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Agricultural Employment</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Workforce distribution in agriculture</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">ILO Database</p>
+                            </div>
+                        </div>
+
+                        <!-- More chart cards would follow the same pattern -->
+                        <!-- @MAP: agricultureCharts.map(chart => ( -->
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas class="w-full h-full" data-mock="true"></canvas>
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Chart Title</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Chart description</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">Data source</p>
+                            </div>
+                        </div>
+                        <!-- @END_MAP )) -->
+                    </div>
+                </div>
+            </section>
+            <!-- @END_COMPONENT: SectorRow - Agriculture -->
+
+            <!-- @COMPONENT: SectorRow - Healthcare -->
+            <section data-sector="healthcare">
+                <h3 class="text-2xl font-semibold mb-6 text-white">Healthcare & Public Health</h3>
+                <div class="scroll-container overflow-x-auto">
+                    <div class="flex space-x-6 pb-4" style="width: max-content;">
+                        
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="healthcareChart1" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display WHO health expenditure data -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Healthcare Spending</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Per capita health expenditure trends</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">WHO Global Health Observatory</p>
+                            </div>
+                        </div>
+
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="healthcareChart2" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display life expectancy data as line chart -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Life Expectancy</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Global life expectancy trends by region</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">World Bank Health Data</p>
+                            </div>
+                        </div>
+
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="healthcareChart3" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display vaccination coverage as bar chart -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Vaccination Coverage</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Immunization rates across countries</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">UNICEF Health Data</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- @END_COMPONENT: SectorRow - Healthcare -->
+
+            <!-- @COMPONENT: SectorRow - Education -->
+            <section data-sector="education">
+                <h3 class="text-2xl font-semibold mb-6 text-white">Education & Learning</h3>
+                <div class="scroll-container overflow-x-auto">
+                    <div class="flex space-x-6 pb-4" style="width: max-content;">
+                        
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="educationChart1" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display literacy rates data -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Global Literacy Rates</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Adult literacy trends by region</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">UNESCO Institute for Statistics</p>
+                            </div>
+                        </div>
+
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="educationChart2" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display school enrollment data -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">School Enrollment</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Primary and secondary education enrollment</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">World Bank Education Data</p>
+                            </div>
+                        </div>
+
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="educationChart3" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display education expenditure data -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Education Spending</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Government expenditure on education</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">OECD Education Database</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- @END_COMPONENT: SectorRow - Education -->
+
+            <!-- @COMPONENT: SectorRow - Budget -->
+            <section data-sector="budget">
+                <h3 class="text-2xl font-semibold mb-6 text-white">Government Budgets & Finance</h3>
+                <div class="scroll-container overflow-x-auto">
+                    <div class="flex space-x-6 pb-4" style="width: max-content;">
+                        
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="budgetChart1" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display government revenue data -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Government Revenue</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Revenue sources and trends</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">IMF Fiscal Affairs</p>
+                            </div>
+                        </div>
+
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="budgetChart2" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display public debt data -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Public Debt Levels</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Debt-to-GDP ratios by country</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">World Bank Fiscal Data</p>
+                            </div>
+                        </div>
+
+                        <div class="chart-card relative bg-netflix-dark rounded-lg overflow-hidden flex-shrink-0" style="width: 320px; height: 240px;">
+                            <div class="w-full h-full p-4">
+                                <canvas id="budgetChart3" class="w-full h-full" data-mock="true"></canvas>
+                                <!-- @FUNCTIONALITY: Display budget allocation data -->
+                            </div>
+                            <div class="slide-up-panel absolute bottom-0 left-0 right-0 bg-gradient-to-t from-netflix-black via-netflix-black/90 to-transparent p-4">
+                                <h4 class="font-semibold text-white mb-1" data-bind="chart.title">Budget Allocation</h4>
+                                <p class="text-sm text-gray-300 mb-2" data-bind="chart.description">Spending distribution across sectors</p>
+                                <p class="text-xs text-gov-light-blue" data-bind="chart.source">Government Budget Portal</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- @END_COMPONENT: SectorRow - Budget -->
+
+        </div>
+    </main>
+    <!-- @END_COMPONENT: MainContent -->
+
+    <!-- @COMPONENT: FullscreenModal - Instagram Reels Style -->
+    <div id="fullscreenModal" class="modal-backdrop fixed inset-0 z-50 bg-black/80 hidden">
+        <div class="relative w-full h-full flex flex-col">
+            
+            <!-- Navigation Bar at Top -->
+            <div class="absolute top-0 left-0 right-0 z-60 flex justify-between items-center p-6 bg-gradient-to-b from-black/70 to-transparent">
+                <button id="prevChart" class="flex items-center space-x-2 text-white hover:text-gov-light-blue transition-colors" data-event="click:navigatePrev">
+                    <i class="fas fa-chevron-left"></i>
+                    <span class="hidden md:inline">Previous</span>
+                </button>
+                
+                <div class="flex items-center space-x-4">
+                    <span id="chartCounter" class="text-sm text-gray-300" data-bind="currentIndex + ' of ' + totalCharts">1 of 12</span>
+                    <button id="closeModal" class="text-white hover:text-red-400 transition-colors text-xl" data-event="click:closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <button id="nextChart" class="flex items-center space-x-2 text-white hover:text-gov-light-blue transition-colors" data-event="click:navigateNext">
+                    <span class="hidden md:inline">Next</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Chart Display Area -->
+            <div class="flex-1 flex items-center justify-center p-6 pt-20">
+                <div class="w-full max-w-4xl h-96 bg-netflix-dark rounded-lg p-6">
+                    <canvas id="fullscreenChart" class="w-full h-full" data-mock="true"></canvas>
+                    <!-- @FUNCTIONALITY: Display selected chart in fullscreen with larger dimensions -->
+                </div>
+            </div>
+
+            <!-- Chart Information Caption -->
+            <div class="bg-gradient-to-t from-black via-black/90 to-transparent p-6 space-y-3">
+                <h2 id="modalChartTitle" class="text-2xl font-bold text-white" data-bind="selectedChart.title">Chart Title</h2>
+                <p id="modalChartDescription" class="text-gray-300 leading-relaxed max-w-3xl" data-bind="selectedChart.description">
+                    Detailed description of the chart data and what insights it provides about government operations and public sector performance.
+                </p>
+                <div class="flex items-center space-x-4 text-sm">
+                    <span class="text-gov-light-blue" data-bind="selectedChart.source">Data Source</span>
+                    <span class="text-gray-500">•</span>
+                    <span class="text-gray-400" data-bind="selectedChart.lastUpdated">Last updated: Today</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: FullscreenModal -->
+
+    <!-- @COMPONENT: LoadingStates -->
+    <div id="loadingOverlay" class="fixed inset-0 z-60 bg-netflix-black/90 hidden">
+        <div class="flex items-center justify-center h-full">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gov-light-blue mx-auto mb-4"></div>
+                <p class="text-gray-300">Loading government data...</p>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: LoadingStates -->
+
+    <script>
+        (function() {
+            // TODO: Implement Chart.js initialization for all chart canvases
+            // TODO: Implement API integration with World Bank, data.gov.in, WHO APIs
+            // TODO: Implement Netflix-style horizontal scrolling with smooth animations
+            // TODO: Implement Instagram Reels-style modal navigation with swipe support
+            // TODO: Implement loading states and error handling for API calls
+            // TODO: Implement responsive chart sizing and mobile optimizations
+
+            // Modal functionality demonstration
+            let currentChartIndex = 0;
+            const totalCharts = 12; // Example total
+
+            const modal = document.getElementById('fullscreenModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const prevBtn = document.getElementById('prevChart');
+            const nextBtn = document.getElementById('nextChart');
+            const chartCounter = document.getElementById('chartCounter');
+
+            // Chart card click handlers
+            document.querySelectorAll('.chart-card').forEach((card, index) => {
+                card.addEventListener('click', function() {
+                    currentChartIndex = index;
+                    updateModalContent();
+                    modal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            // Modal navigation
+            closeModalBtn.addEventListener('click', closeModal);
+            prevBtn.addEventListener('click', navigatePrev);
+            nextBtn.addEventListener('click', navigateNext);
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (!modal.classList.contains('hidden')) {
+                    if (e.key === 'Escape') closeModal();
+                    if (e.key === 'ArrowLeft') navigatePrev();
+                    if (e.key === 'ArrowRight') navigateNext();
+                }
+            });
+
+            function closeModal() {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+
+            function navigatePrev() {
+                currentChartIndex = (currentChartIndex - 1 + totalCharts) % totalCharts;
+                updateModalContent();
+            }
+
+            function navigateNext() {
+                currentChartIndex = (currentChartIndex + 1) % totalCharts;
+                updateModalContent();
+            }
+
+            function updateModalContent() {
+                chartCounter.textContent = `${currentChartIndex + 1} of ${totalCharts}`;
+                
+                // TODO: Update chart data and redraw Chart.js instance
+                // TODO: Update modal title, description, and source based on current chart
+                
+                // Example content updates (would be data-driven in real app)
+                const exampleTitles = [
+                    'Global Crop Production', 'Food Security Index', 'Agricultural Employment',
+                    'Healthcare Spending', 'Life Expectancy', 'Vaccination Coverage',
+                    'Global Literacy Rates', 'School Enrollment', 'Education Spending',
+                    'Government Revenue', 'Public Debt Levels', 'Budget Allocation'
+                ];
+                
+                document.getElementById('modalChartTitle').textContent = exampleTitles[currentChartIndex];
+            }
+
+            // TODO: Initialize Chart.js instances for all chart canvases
+            // Example chart initialization (would be replaced with real data)
+            function initializeCharts() {
+                // This would contain the actual Chart.js initialization code
+                // connecting to real APIs and rendering live data
+            }
+
+            // TODO: Implement smooth horizontal scrolling for sector rows
+            function initializeHorizontalScroll() {
+                // Add touch/mouse drag scrolling for better UX
+                // Add scroll indicators and navigation arrows
+            }
+
+            // TODO: Implement API data fetching and error handling
+            function fetchGovernmentData() {
+                // Fetch data from World Bank API
+                // Fetch data from data.gov.in API  
+                // Fetch data from WHO/OECD APIs
+                // Handle loading states and errors
+            }
+
+        })();
+    </script>
+</body>
+</html>
