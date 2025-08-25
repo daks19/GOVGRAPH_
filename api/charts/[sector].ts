@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getAgricultureCharts, getHealthcareCharts, getEducationCharts, getBudgetCharts, getTrafficCharts, getUtilitiesCharts } from '../../_chartsData';
+import { getAgricultureCharts, getHealthcareCharts, getEducationCharts, getBudgetCharts, getTrafficCharts, getUtilitiesCharts } from '../_chartsData';
 
 const handlers: Record<string, () => Promise<any[]>> = {
   agriculture: getAgricultureCharts,
