@@ -1,6 +1,19 @@
+## Dependencies
 node_modules
+
+## Build outputs
 dist
+build
+.next
+
+## OS / tooling noise
 .DS_Store
+
+## Generated static server public (if ever produced)
 server/public
+
+## Vite temp variants
 vite.config.ts.*
+
+## Archives
 *.tar.gz
