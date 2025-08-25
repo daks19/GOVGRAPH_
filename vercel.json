@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build:client",
+  "outputDirectory": "dist/public",
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "routes": [
+    { "src": "/api/datagov/(.*)", "dest": "/api/datagov/$1" },
+    { "src": "/api/india/health/(.*)", "dest": "/api/india/health/$1" },
+    { "src": "/api/charts/(.*)", "dest": "/api/charts/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
