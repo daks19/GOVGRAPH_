@@ -60,7 +60,7 @@ export default function ChartCard({ chart, onClick }: ChartCardProps) {
 
   return (
     <div
-      className="group chart-card relative flex-shrink-0 cursor-pointer border border-gov-blue/40 rounded-2xl bg-gov-dark shadow-md hover:shadow-lg overflow-hidden"
+      className="group chart-card relative flex-shrink-0 cursor-pointer border border-gov-blue/40 rounded-2xl bg-gov-dark shadow-md hover:shadow-lg overflow-visible"
       style={{ width: "320px" }}
       onClick={onClick}
       data-testid={`chart-card-${chart.id}`}
@@ -72,34 +72,25 @@ export default function ChartCard({ chart, onClick }: ChartCardProps) {
         </div>
       </div>
 
-      <div className="border-t border-gov-blue/25 relative z-10">
-        {/* Title + moving bookmark (normal flow) */}
-        <div className="px-4 pt-3 pb-4" data-testid={`chart-title-wrapper-${chart.id}`}>
-          <h4 className="font-semibold text-white text-base leading-tight" data-testid={`chart-title-${chart.id}`}>
-            {chart.title}
-          </h4>
-        </div>
+      <div className="border-t border-gov-blue/25 relative z-10 px-4 pt-3 pb-4" data-testid={`chart-title-wrapper-${chart.id}`}>
+        <h4 className="font-semibold text-white text-base leading-tight" data-testid={`chart-title-${chart.id}`}>
+          {chart.title}
+        </h4>
+      </div>
 
-        {/* Sliding description + meta */}
-        <div
-          className="px-4 pb-0 -mt-2 overflow-hidden transition-[max-height,padding,opacity] duration-300 ease-out max-h-0 opacity-0 group-hover:max-h-60 group-hover:pb-4 group-hover:pt-6 group-hover:opacity-100"
-          data-testid={`chart-panel-${chart.id}`}
-        >
-          <p
-            className="text-sm text-gray-300 mb-3 leading-relaxed"
-            data-testid={`chart-description-${chart.id}`}
-          >
-            {chart.description}
+      {/* Hover expansion panel (absolute, doesn't affect layout height) */}
+      <div
+        className="absolute left-0 right-0 top-full translate-y-0 origin-top border border-gov-blue/40 rounded-b-2xl bg-gov-dark/95 backdrop-blur-sm px-4 pt-6 pb-4 shadow-lg opacity-0 scale-y-0 group-hover:opacity-100 group-hover:scale-y-100 transition-all duration-300 ease-out z-30"
+        data-testid={`chart-panel-${chart.id}`}
+      >
+        <p className="text-sm text-gray-300 mb-3 leading-relaxed" data-testid={`chart-description-${chart.id}`}>
+          {chart.description}
+        </p>
+        <div className="flex items-center justify-between">
+          <p className="text-xs text-gov-light-blue font-medium" data-testid={`chart-source-${chart.id}`}>
+            📊 {chart.source}
           </p>
-          <div className="flex items-center justify-between">
-            <p
-              className="text-xs text-gov-light-blue font-medium"
-              data-testid={`chart-source-${chart.id}`}
-            >
-              📊 {chart.source}
-            </p>
-            <div className="text-xs text-gray-400">Hover for details</div>
-          </div>
+          <div className="text-xs text-gray-400">Hover for details</div>
         </div>
       </div>
     </div>
