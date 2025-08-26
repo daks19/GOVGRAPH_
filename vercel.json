@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build:client",
+  "outputDirectory": "dist/public",
+  "routes": [
+    { "src": "/api/.*", "status": 404 },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
