@@ -3,7 +3,9 @@
   "buildCommand": "npm run build:client",
   "outputDirectory": "dist/public",
   "routes": [
-    { "src": "/api/.*", "status": 404 },
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/(.*)\\.(css|js|png|jpg|jpeg|svg|ico|json|txt|map)", "dest": "/$1.$2" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
